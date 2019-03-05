@@ -2,7 +2,9 @@ new_session: true
 delete_merged_file: true
 
 rmd_files: [
-  "index.Rmd"
+  "index.Rmd",
+  "basemaps.Rmd",
+  "references.Rmd"
 ]
 
 before_chapter_script: "_common.R"

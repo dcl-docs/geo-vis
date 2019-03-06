@@ -2,6 +2,8 @@
 
 ## Introduction
 
+In this chapter, you'll learn how to use Mapbox to create interactive and static maps with basemaps.
+
 We'll use the following libraries and data.
 
 ```{r, message=FALSE, warning=FALSE}
@@ -10,8 +12,6 @@ library(tidyverse)
 
 africa <- read_sf("data/countries/africa.geojson")
 ```
-
-In this chapter, you'll learn how to create interactive and static maps with basemaps using Mapbox. 
 
 ### Basemaps
 
@@ -45,25 +45,25 @@ And here's what it look like if we zoom in even further, on a particular spot in
 knitr::include_graphics("images/dakar.png")
 ```
 
-Basemaps can add context to your geospatial data, and keep you from having to include the same geographic features in every geospatial data set you want to visualize. In this chapter, we'll visualize the location of cholera deaths and water pumps on top of a basemap. This basemap allows us to see the street locations of the deaths and water pumps that we wouldn't otherwise have access to.
+Basemaps can add context to your geospatial data, and keep you from having to include the same geographic features in every geospatial data set you want to visualize. In this chapter, we'll visualize the location of cholera deaths and water pumps on top of a basemap. This basemap allows us to see the street locations of the deaths and water pumps.
 
-In this chapter, you'll learn how to create both interactive and static maps that include basemaps. We'll use [Mapbox](https://www.mapbox.com/) to create both maps. This chapter will walk you through using Mapbox Studio to create interactive maps, as well as how to use the Mapbox Static API to turn your interactive map into a PNG file.
+In this chapter, you'll learn how to create both interactive and static maps that include basemaps. We'll use [Mapbox](https://www.mapbox.com/) to create both maps. This chapter will walk you through using Mapbox Studio to create interactive maps, as well as how to use the Mapbox Static API to turn your interactive maps into PNG images.
 
 ### Tiles
 
-With interactive web maps, its usually possible to both zoom and move around the map, which means you'll only ever see a portion of the map at a time. Web maps handle this functionality by using _tiles_. Each tile contains data for a specific square sub-region of a map, and there are different sets of tiles for different zoom levels. 
+With interactive web maps, it is usually possible to both zoom and move around the map, which means you'll only ever see a portion of the map at a time. Web maps handle this functionality by using _tiles_. Each tile contains data for a specific square sub-region of a map, and there are different sets of tiles for different zoom levels. 
 
 There are two types of tiles: raster and vector. Raster tiles store their data in pixels, and so are like small pictures. Because they store their data in pixels, you can't easily edit aspects of the tiles. For example, imagine you had a set of raster tiles with highways colored blue, and you wanted to change the color of all highways to yellow. You would have to change each pixel that corresponded to a highway. 
 
-Vector tiles store all data in vector format. This means that they can distinguish between different _layers_, such as roads, country borders, and lakes, and you can quickly manipulate these elements before rendering. Vector tiles also make operations like tilting possible. If you wanted to change the color of the highways in a vector tileset, all you'd have to do is change the way that highways layer is displayed, which is fast and easy with vector data. 
+Vector tiles store all data in vector format. This means that they can distinguish between different _layers_, such as roads, country borders, and lakes, and you can easily manipulate these elements before rendering. Vector tiles also make operations like tilting possible. If you wanted to change the color of the highways in a vector tileset, all you'd have to do is change the way that highways layer is displayed, which is fast and easy with vector data. 
 
-In this reading, we'll walk you through the creation of an interactive Mapbox map. When you're done creating your map, you'll have created a custom tileset with various layers. You'll also have created a set of rules for styling these layers so that the map appears how you want it to appear. 
+In this reading, we'll walk you through the creation of two interactive Mapbox maps. When you're done creating each map, you'll have created a custom tileset with various layers and a set of rules for styling these layers.
 
 ### Mapbox
 
-Mapbox provides infrastructure for developers to create vector-tile maps and map applications. It has a library of vector-tile basemaps with data from OpenStreetMap, an open data effort that works like a Wikipedia for maps.
+Mapbox provides infrastructure for developers to create vector-tile maps and map applications. It has a library of vector-tile basemaps with data from [OpenStreetMap](https://www.openstreetmap.org/about), an open data effort that works like Wikipedia for maps.
 
-Mapbox has its won JavaScript library, Mapbox GL JS, that it uses to write custom interactive webmaps. Instead of explaining Mapbox GL JS, we'll use Mapbox Studio, which is a web interface to GL JS. In Studio, you can easily create and edit Mapbox maps and share them via URL. You can then use Mapbox's Static API to create static versions of your maps. 
+Mapbox has its own JavaScript library, Mapbox GL JS, that it uses to write custom interactive webmaps. Instead of explaining Mapbox GL JS, we'll use Mapbox Studio, which is a web interface to Mapbox GL JS. In Studio, you can create and edit Mapbox maps and share them via URL. You can then use Mapbox's Static API to create static versions of your maps. 
 
 To introduce you to Mapbox Studio, we'll walk you through the creation of two maps that visualize John Snow's data on the 1854 London cholera epidemic. The first map will use circles to represent the number of deaths at a given location. The second will be a heatmap.
 
@@ -100,13 +100,15 @@ In 1854, many mistakenly believed that cholera was spread through the air. Howev
   
 [@snow-1855, p. 39-40]
 
-Snow reported his findings to the authorities responsible for the community water supply, they removed the handle from the Broad Street pump, and the epidemic ended.
+Snow reported his findings to the authorities responsible for the community water supply, who then removed the handle from the Broad Street pump. The epidemic soon ended.
 
 Snow visualized his data by creating a map showing the location of local water pumps and deaths from the outbreak. This map helped overturn the prevailing belief that cholera was an airborne disease. As a result, London improved its water infrastructure and developed procedures to eliminate future such cholera outbreaks.
 
 ###  Download data
 
-You can download the original data from Robin Wilson's [website](http://rtwilson.com/downloads/SnowGIS_KML.zip), but we've cleaned the data and converted to GeoJSON to make it easy to upload to Mapbox. The GeoJSON files are available in the `data` folder. Let's read them in to see what they look like.
+Robin Wilson compiled Snow's data and made it available on his [website](http://blog.rtwilson.com/john-snows-cholera-data-in-more-formats/). We've formatted his data and converted the two files GeoJSON to make them easy to upload to Mapbox. These two GeoJSON files are available in the `data` folder. Let's read them in to see what they look like.
+
+The original data can be downloaded [here](http://rtwilson.com/downloads/SnowGIS_KML.zip).
 
 ```{r}
 deaths <- read_sf("data/cholera/cholera_deaths.geojson")
@@ -123,19 +125,19 @@ pumps
 
 Download `cholera_deaths.geojson` and `cholera_pumps.geojson`. Next, we'll upload these files to Mapbox.
 
-### Upload data to Mapbox Studio
+### Upload data
 
 If you don't already have a Mapbox account, create one by going to https://account.mapbox.com/auth/signup/.
 
 Earlier, we introduced you to the idea of tiles. We want to create a custom tileset that includes standard features like roads and location labels, but that also includes the locations of the water pumps and deaths due to the cholera outbreak. In order to create this custom tileset, we first need to upload our data and convert it to its own tileset.
 
 * Go to [Mapbox Studio](https://studio.mapbox.com/). If you're elsewhere in Mapbox, you can click the astronaut icon in the upper-right and then click __Studio__.
-* Click on Tilesets in the upper-right corner. 
+* Click on __Tilesets__ in the upper-right corner.
 * Click the blue button labeled __New tileset__.
 * Upload `cholera_deaths.geojson` and `cholera_pumps.geojson`. You'll have to upload one at a time. 
-* The two tilesets should now appear in the list. They'll each have a random string identifier after their names.  
+* The two tilesets should now appear in the list. Each tileset will have a random string identifier after its name.  
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 # sara
 knitr::include_graphics("images/screenshots/tilesets.png")
 ```

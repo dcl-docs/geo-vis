@@ -549,12 +549,11 @@ Store your chosen longitude, latitude, zoom, width, and height values in variabl
 (We didn't include ours here so that you play around with different values yourself.)
 
 ```{r, echo=FALSE}
-# need to update
-longitude <- -0.1355
-latitude <- 51.5138
-zoom <- 14.98
-width <- 600
-height <- 400
+longitude <- -0.135852
+latitude <- 51.51356
+zoom <- 16.15
+width <- 1200
+height <- 800
 ```
 
 ### Create your API call

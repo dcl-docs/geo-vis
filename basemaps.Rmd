@@ -129,9 +129,9 @@ If you don't already have a Mapbox account, create one by going to https://accou
 
 Earlier, we introduced you to the idea of tiles. We want to create a custom tileset that includes standard features like roads and location labels, but that also includes the locations of the water pumps and deaths due to the cholera outbreak. In order to create this custom tileset, we first need to upload our data and convert it to its own tileset.
 
-* Go to [Mapbox Studio](https://studio.mapbox.com/). If you're elsewhere in Mapbox, you can click the astronaut icon in the upper-right and then click _Studio_.
+* Go to [Mapbox Studio](https://studio.mapbox.com/). If you're elsewhere in Mapbox, you can click the astronaut icon in the upper-right and then click __Studio__.
 * Click on Tilesets in the upper-right corner. 
-* Click the blue button labeled _New tileset_.
+* Click the blue button labeled __New tileset__.
 * Upload `cholera_deaths.geojson` and `cholera_pumps.geojson`. You'll have to upload one at a time. 
 * The two tilesets should now appear in the list. They'll each have a random string identifier after their names.  
 

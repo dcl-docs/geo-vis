@@ -475,10 +475,10 @@ style_url <- "mapbox://styles/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs"
 access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#15.8/51.512938/-0.135532/0"
 ```
 
-Now, we can display our map. `addMapboxGL()` adds Mapbox vector tiles to a leaflet map.
+Now, we can display our map. `addMapboxGL()` adds Mapbox vector tiles to a leaflet map. You can adjust the height and width of a leaflet plot with the `height` and `width` arguments.
 
 ```{r}
-leaflet() %>% 
+leaflet(height = 800, width = 950) %>% 
   addMapboxGL(
     style = style_url,
     accessToken = access_token
@@ -494,7 +494,7 @@ Note that you have to use the `deaths` tibble to reference the data.
 ```{r}
 deaths <- read_sf("data/cholera/cholera_deaths.geojson")
 
-leaflet() %>% 
+leaflet(height = 800, width = 950) %>% 
   addMapboxGL(
     style = style_url,
     accessToken = access_token

@@ -156,7 +156,7 @@ You now have everything you need to create a map in Mapbox Studio. We'll create 
 knitr::include_graphics("images/screenshots/circles-final.png")
 ```
 
-You can view our completed map [here](https://api.mapbox.com/styles/v1/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.2/51.513683/-0.136001).
+You can view our completed map [here](https://api.mapbox.com/styles/v1/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.1/51.513564/-0.135852/0).
 
 ### Create a style
 
@@ -357,7 +357,7 @@ Now, we'll create a heatmap. Your final result should look something like this:
 knitr::include_graphics("images/screenshots/heatmap-final.png")
 ```
 
-You can view the map [here](https://api.mapbox.com/styles/v1/stanford-datalab/cjsuo2k338t411fsenxjvz4aw.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#15.8/51.512938/-0.135532/0).
+You can view the map [here](https://api.mapbox.com/styles/v1/stanford-datalab/cjsuo2k338t411fsenxjvz4aw.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.1/51.513564/-0.135852/0).
 
 ### Create a style
 

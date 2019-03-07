@@ -486,9 +486,14 @@ leaflet() %>%
 ```
 
 Another advantage of leaflet.mapboxgl is that you can add any leaflet function to your map. We'll use this functionality to add tooltips, which you can't do in Mapbox Studio. 
+
 The function `addCircleMarkers()` adds circles to a leaflet plot. You can use the `label` argument to set the text of a tooltip. 
 
+Note that you have to use the `deaths` tibble to reference the data.
+
 ```{r}
+deaths <- read_sf("data/cholera/cholera_deaths.geojson")
+
 leaflet() %>% 
   addMapboxGL(
     style = style_url,

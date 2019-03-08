@@ -534,7 +534,7 @@ Store your Mapbox username and access token in variables.
 
 ```{r}
 username <- "stanford-datalab"
-access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.2/51.513683/-0.136001"
+access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg"
 ```
 
 ### Style ID
@@ -551,7 +551,7 @@ knitr::include_graphics("images/screenshots/styles-page-share-url.png")
 
 The style ID for your map is the string that comes after your username and before the _.html_. 
 
-[https://api.mapbox.com/styles/v1/stanford-datalab/<mark>cjsqj3qvi3zrf1fld8qvywggs</mark>.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.2/51.513683/-0.136001](https://api.mapbox.com/styles/v1/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.2/51.513683/-0.136001)
+[https://api.mapbox.com/styles/v1/stanford-datalab/<mark>cjsqj3qvi3zrf1fld8qvywggs</mark>.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.1/51.513564/-0.135852/0](https://api.mapbox.com/styles/v1/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs.html?fresh=true&title=true&access_token=pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#16.1/51.513564/-0.135852/0)
 
 Store your map's style ID in a variable.
 
@@ -698,7 +698,7 @@ download.file(url = api_call, destfile = circles_map_file)
 
 To include your image in an R Markdown document, use `knitr::include_graphics`.
 
-```{r}
+```{r, out.width="100%"}
 knitr::include_graphics(circles_map_file)
 ```
 

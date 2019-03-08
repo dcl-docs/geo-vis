@@ -35,27 +35,27 @@ In the above plot, `geom_sf()` draws the boundaries represented in the `geometry
 
 Luckily, there are easier ways of adding _basemaps_ to your maps. A basemap is just a map that lies underneath the data you want to visualize. Basemaps can include any number of features. For example, a basemap could just be a satellite image, or could include features like rivers, streets, and geographic boundary names. 
 
-Here's an example basemap from Mapbox, the mapping technology we'll use in this chapter.
+Here's an example basemap from Mapbox, who basemaps and tools we'll use in this chapter.
 
-```{r, echo=FALSE, fig.width=9, fig.height=6}
+```{r, echo=FALSE}
 knitr::include_graphics("images/africa.png")
 ```
 
 Mapbox's basemaps are interactive, so we can zoom in and get even more detail. For example, here's what the basemap looks like if we zoom in on Senegal.
 
-```{r, echo=FALSE, fig.width=9, fig.height=6}
+```{r, echo=FALSE}
 knitr::include_graphics("images/senegal.png")
 ```
 
 And here's what it look like if we zoom in even further, on a particular spot in Dakar.
 
-```{r, echo=FALSE, fig.width=9, fig.height=6}
+```{r, echo=FALSE}
 knitr::include_graphics("images/dakar.png")
 ```
 
 Basemaps add context to your geospatial data and provide common elements you can use across different data sets. In this chapter, we'll visualize the location of cholera deaths and water pumps on top of a basemap. This basemap allows us to see the street locations of the deaths and water pumps.
 
-In this chapter, you'll learn how to create both interactive and static maps that include basemaps. We'll use [Mapbox](https://www.mapbox.com/) to create both maps. This chapter will walk you through using Mapbox Studio to create interactive maps, as well as how to use the Mapbox Static API to turn your interactive maps into PNG images.
+In this chapter, we'll use [Mapbox](https://www.mapbox.com/) to create both interactive and static maps that include basemaps. We will beging by using Mapbox Studio to create interactive maps and then use the Mapbox Static API to turn these interactive maps into PNG images.
 
 ### Tiles
 
@@ -63,14 +63,13 @@ With interactive web maps, it is usually possible to both zoom and move around t
 
 There are two types of tiles: raster and vector. Raster tiles store their data in pixels, and so are like small pictures. Because they store their data in pixels, you can't easily edit aspects of the tiles. For example, imagine you had a set of raster tiles with highways colored blue, and you wanted to change the color of all highways to yellow. You would have to change each pixel that corresponded to a highway. 
 
-Vector tiles store all data in vector format. This means that they can distinguish between different _layers_, such as roads, country borders, and lakes, and you can easily manipulate these elements before rendering. Vector tiles also make operations like tilting possible. If you wanted to change the color of the highways in a vector tileset, all you'd have to do is change the way that highways layer is displayed, which is fast and easy with vector data. 
-In this reading, we'll walk you through the creation of two interactive Mapbox maps. When you're done creating each map, you'll have created a custom tileset with various layers and a set of rules for styling these layers.
+Vector tiles store all data in vector format. This means that they can distinguish between different _layers_, such as roads, country borders, and lakes, and you can easily manipulate these elements before rendering. Vector tiles also make operations like tilting possible. If you wanted to change the color of the highways in a vector tileset, all you'd have to do is change the way that highways layer is displayed, which is fast and easy with vector data. Below, we'll walk you through the creation of two interactive Mapbox maps. When you're done creating each map, you'll have created a custom vector tileset with various layers and a set of rules for styling these layers.
 
 ### Mapbox
 
 Mapbox provides infrastructure for developers to create vector-tile maps and map applications. It has a library of vector-tile basemaps with data from [OpenStreetMap](https://www.openstreetmap.org/about), an open data effort that works like Wikipedia for maps.
 
-Mapbox has its own JavaScript library, Mapbox GL JS, that it uses to write custom interactive webmaps. Instead of explaining Mapbox GL JS, we'll use Mapbox Studio, which is a web interface to Mapbox GL JS. In Studio, you can create and edit Mapbox maps and share them via URL. You can then use Mapbox's Static API to create static versions of your maps. 
+Mapbox has its own JavaScript library, Mapbox GL JS, that it uses to write custom interactive web maps. Instead of explaining Mapbox GL JS, we'll use Mapbox Studio, which is a web interface to Mapbox GL JS. In Studio, you can create and edit Mapbox maps and share them via URL. You can then use Mapbox's Static API to create static versions of your maps. 
 
 To introduce you to Mapbox Studio, we'll walk you through the creation of two maps that visualize John Snow's data on the 1854 London cholera epidemic. The first map will use circles to represent the number of deaths at a given location. The second will be a heatmap.
 
@@ -201,19 +200,19 @@ We'll need three different layers to represent the deaths and pumps data. One la
 * Click the gray __Add layer__ button in the upper-right corner. Your map will immediately look different. Don't worry, this isn't because you've accidentally changed some feature. Mapbox is just highlighting all the layers without styling them. 
 * You are now in the layer editor for a new layer. Notice that _New layer_ now appears in the layer list on the left, and is highlighted to indicate that you're currently editing this layer.
 * Notice that there are _Active sources_ and _Unused sources_ in the layer editor. Each of these sources is a tileset. Active sources are tilesets that the map currently uses to create different layers. Unused sources are available tilesets that are not yet used. 
-* If you click on the name of a tileset, you'll see all the available layers in that tileset. The tilesets included with Mapbox, like Mapbox Streets v8, each contain many different layers. Our custom tilesets (cholera_deaths-* and cholera_pumps-*) each contain only one.
+* If you click on the name of a tileset, you'll see all the available layers in that tileset. The tilesets included with Mapbox, like Mapbox Streets v8, each contain many different layers. Our custom tilesets (_cholera_deaths-* _ and _cholera_pumps-* _) each contain only one.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/circles-add-layer.png")
 ```
 
-* Click on your _cholera_deaths-*_ tileset from the _Unused sources_ list. Then, click on the layer titled _cholera_deaths-*_ that appears underneath. 
+* Click on your _cholera_deaths-* _ tileset from the _Unused sources_ list. Then, click on the layer titled _cholera_deaths-* _ that appears underneath. 
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/circles-add-layer-deaths.png")
 ```
 
-* We've now created a layer. By default, this layer will be named _cholera_deaths-*_.
+* We've now created a layer. By default, this layer will be named _cholera_deaths-* _.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/circles-deaths-layer-added.png")
@@ -236,7 +235,7 @@ knitr::include_graphics("images/screenshots/circles-deaths-layer-style.png")
 
 Right now, all the dots are the same size. We want to scale them so that the area of the circle encodes the number of deaths. 
 
-* We said that the Style tab controls the aesthetic mappings. For circles, one aesthetic mapping you can control are the radii of the circles. 
+* We said that the __Style__ tab controls the aesthetic mappings. For circles, one aesthetic mapping you can control are the radii of the circles. 
 * To map the number of deaths to circle radii, we could select __Style across data range__ from the __Radius__ tab. However, this will linearly scale the radii of the circles by the number of deaths at that location. We actually want to scale the areas of the circles, not the radii, so we'll have to use a custom formula.
 * Click __Use a formula__.
 
@@ -271,7 +270,7 @@ knitr::include_graphics("images/screenshots/circles-history.png")
 
 ### Style the dots
 
-* Make sure you're on the __Style__ tab of the _cholera_deaths-*_ layer editor.
+* Make sure you're on the __Style__ tab of the _cholera_deaths-* _ layer editor.
 * Use the __Color__ tab to change the color of your circles to red. 
 
 ```{r, echo=FALSE}
@@ -290,7 +289,7 @@ knitr::include_graphics("images/screenshots/circles-deaths-layer-styled.png")
 Now, we'll add a layer to represent the pump locations.
 
 * Again, click on __Add layer__ to create a new layer.
-* Click on your _cholera_pumps-*_ tileset from the unused sources list. Then, click on the _cholera_pumps-*_ layer that appears underneath.
+* Click on your _cholera_pumps-* _ tileset from the unused sources list. Then, click on the _cholera_pumps-* _ layer that appears underneath.
 * Go to the __Style__ tab of the layer editor.
 
 ```{r, echo=FALSE}
@@ -308,14 +307,14 @@ knitr::include_graphics("images/screenshots/circles-pumps-layer-radius.png")
 
 It would be helpful to label each dot that represents a pump. If you were building a ggplot2 plot, you might use both `geom_point()` and `geom_text()` to create a plot with labeled points. Similarly, with Mapbox you have to add two layers to create labeled points: one for the points and one for the labels. We already added the point layer, so now we just have to add the label layer.
 
-* Add a new layer by clicking __Add layer__. Your _cholera_pumps-*_ tileset is now an active source. Click on your _cholera_pumps-*_ tileset then on the _cholera_pumps-*_ layer that appears underneath.
-* By default, the layer will be named _cholera_pumps-* (1)_. Change the name of the layer to _cholera-pump-labels-*_ by clicking on the layer name towards the top of the layer editor.
+* Add a new layer by clicking __Add layer__. Your _cholera_pumps-* _ tileset is now an active source. Click on your _cholera_pumps-* _ tileset then on the _cholera_pumps-* _ layer that appears underneath.
+* By default, the layer will be named _cholera_pumps-* (1)_. Change the name of the layer to _cholera-pump-labels-* _ by clicking on the layer name towards the top of the layer editor.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/circles-pump-labels-name.png")
 ```
 
-* By default, the layer type for the _cholera-pump-labels-*_ layer is _Circle_, but we want text, not dots, for this layer. Change the layer type in the __Type__ tab to _Symbol_.
+* By default, the layer type for the _cholera-pump-labels-* _ layer is _Circle_, but we want text, not circles, for this layer. Change the layer type in the __Type__ tab to _Symbol_.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/circles-pump-labels-type.png")
@@ -374,11 +373,11 @@ knitr::include_graphics("images/screenshots/heatmap-name-london.png")
 
 Mapbox can plot layers on top of each other. Each time you add a new layer, Mapbox places it on top of all other existing layers. This means that you'll typically want to add layers from the bottom up. Our heatmap has a heatmap layer underneath the two pumps layers, so ordinarily you would add the heatmap layer first, and then add the pumps layers. 
 
-Here, we'll add the pumps layers first so that you can see how to change the layer order.
+Here, we'll add the pumps layers first, so that you can see how to change the layer order.
 
 We'll add the two pumps layers exactly as we did for the circles map.
 
-* First, add a layer for the pumps dots. Click __Add layer__, then select the _cholera_pumps-*_ layer from underneath your _cholera_pumps-*_ tileset.
+* First, add a layer for the pumps dots. Click __Add layer__, then select the _cholera_pumps-* _ layer from underneath your _cholera_pumps-* _ tileset.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/heatmap-add-pumps-layer.png")
@@ -390,13 +389,13 @@ knitr::include_graphics("images/screenshots/heatmap-add-pumps-layer.png")
 knitr::include_graphics("images/screenshots/heatmap-pumps-radius.png")
 ```
 
-* Next, add the pump labels layer. Select the _cholera_pumps-*_ layer from your _cholera_pumps-*_ tileset that will now appear in the active sources list.
+* Next, add the pump labels layer. Select the _cholera_pumps-* _ layer from your _cholera_pumps-* _ tileset that will now appear in the active sources list.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/heatmap-add-pumps-labels.png")
 ```
 
-* Change the name of the layer to _cholera-pump-labels-*_ and change the type of _Symbol_. 
+* Change the name of the layer to _cholera-pump-labels-* _ and change the type of _Symbol_. 
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/heatmap-pumps-labels-type.png")
@@ -410,7 +409,7 @@ knitr::include_graphics("images/screenshots/heatmap-pumps-labels.png")
 
 ### Add the deaths heatmap layer
 
-* Add the deaths layer by selecting the _cholera_deaths-*_ layer from underneath your _cholera_deaths-*_ tileset.
+* Add the deaths layer by selecting the _cholera_deaths-* _ layer from underneath your _cholera_deaths-* _ tileset.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/heatmap-add-deaths-layer.png")
@@ -434,7 +433,7 @@ knitr::include_graphics("images/screenshots/heatmap-wrong-order.png")
 
 The heatmap is on top of the pump layers, obscuring some of the pumps. 
 
-* Change the order of the layers by dragging and dropping the layer names in the list on the left. You want the _cholera_deaths-*_ layer on top of both the pumps layers.
+* Change the order of the layers by dragging and dropping the layer names in the list on the left. You want the _cholera_deaths-* _ to be below both of the pumps layers.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/heatmap-layers-list.png")
@@ -478,7 +477,7 @@ access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5Mndw
 Now, we can display our map. `addMapboxGL()` adds Mapbox vector tiles to a leaflet map. You can adjust the height and width of a leaflet plot with the `height` and `width` arguments.
 
 ```{r}
-leaflet(height = 800, width = 950) %>% 
+leaflet(width = 950, height = 800)  %>% 
   addMapboxGL(
     accessToken = access_token,
     style = style_url
@@ -702,7 +701,8 @@ To include your image in an R Markdown document, use `knitr::include_graphics`.
 knitr::include_graphics(file_circles_map)
 ```
 
-Now you can see the exact image that your API parameters produce. If you're not happy with the image, all you have to do is adjust your parameters slightly, and then rerun your code. It's difficult to adjust latitude and longitude values by hand, so we recommend adjusting the height, width, and zoom first. If you think you do need to change the latitude and longitude, you may have to go back to Studio or the static API.  
+Now you can see the exact image that your API parameters produce. If you're not happy with the image, all you have to do is adjust your parameters slightly, and then rerun your code. It's difficult to adjust longitude and latitude values by hand, so we recommend adjusting the width, height, and zoom first. If you think you do need to change the longitude and latitude, you may have to go back to Studio or the static API.
+
 Here's a function that includes all the code to make this process a bit easier. The function creates the API call, downloads the image, and displays the image using knitr. All you need to do is pass in the parameters.
 
 ```{r}

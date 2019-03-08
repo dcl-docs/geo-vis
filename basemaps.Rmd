@@ -8,9 +8,9 @@ We'll use the following libraries and data.
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
-library(sf)
 library(leaflet)
 library(leaflet.mapboxgl)
+library(sf)
 
 africa <- read_sf("data/countries/africa.geojson")
 ```
@@ -472,7 +472,7 @@ knitr::include_graphics("images/screenshots/styles-page-style-url.png")
 
 ```{r}
 style_url <- "mapbox://styles/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs"
-access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg#15.8/51.512938/-0.135532/0"
+access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg"
 ```
 
 Now, we can display our map. `addMapboxGL()` adds Mapbox vector tiles to a leaflet map. You can adjust the height and width of a leaflet plot with the `height` and `width` arguments.
@@ -480,8 +480,8 @@ Now, we can display our map. `addMapboxGL()` adds Mapbox vector tiles to a leafl
 ```{r}
 leaflet(height = 800, width = 950) %>% 
   addMapboxGL(
-    style = style_url,
-    accessToken = access_token
+    accessToken = access_token,
+    style = style_url
   )
 ```
 
@@ -494,10 +494,10 @@ Note that you have to use the `deaths` tibble to reference the data.
 ```{r}
 deaths <- read_sf("data/cholera/cholera_deaths.geojson")
 
-leaflet(height = 800, width = 950) %>% 
+leaflet(width = 950, height = 800) %>% 
   addMapboxGL(
-    style = style_url,
-    accessToken = access_token
+    accessToken = access_token,
+    style = style_url
   ) %>% 
   addCircleMarkers(
     radius = ~ 5 * sqrt(deaths),
@@ -658,14 +658,14 @@ You don't have to perfect your zoom level, height, and width at this stage. We'l
 
 Store your chosen longitude, latitude, zoom, width, and height values in variables. 
 
-```{r}
-# zoom <- [your zoom]
-# width <- [your width]
-# height <- [your height]
+```{r, eval=FALSE}
+zoom <- [your zoom]
+width <- [your width]
+height <- [your height]
 ```
 
 ```{r, echo=FALSE}
-zoom <- 16.15
+zoom <- 16.1
 width <- 1200
 height <- 800
 ```
@@ -690,8 +690,8 @@ If you copy and paste this link into a browser, you should see an image of your 
 Now, we need to download the image. Use `download.file()` to download your image as a PNG. 
 
 ```{r, message=FALSE}
-circles_map_file <- "images/cholera_circles_map.png"
-download.file(url = api_call, destfile = circles_map_file)
+file_circles_map <- "images/cholera_circles_map.png"
+download.file(url = api_call, destfile = file_circles_map)
 ```
 
 ### Display your image
@@ -699,29 +699,23 @@ download.file(url = api_call, destfile = circles_map_file)
 To include your image in an R Markdown document, use `knitr::include_graphics`.
 
 ```{r, out.width="100%"}
-knitr::include_graphics(circles_map_file)
+knitr::include_graphics(file_circles_map)
 ```
 
 Now you can see the exact image that your API parameters produce. If you're not happy with the image, all you have to do is adjust your parameters slightly, and then rerun your code. It's difficult to adjust latitude and longitude values by hand, so we recommend adjusting the height, width, and zoom first. If you think you do need to change the latitude and longitude, you may have to go back to Studio or the static API.  
 Here's a function that includes all the code to make this process a bit easier. The function creates the API call, downloads the image, and displays the image using knitr. All you need to do is pass in the parameters.
 
 ```{r}
-create_png <- function(username, 
-                       style_id, 
-                       longitude, 
-                       latitude, 
-                       zoom, 
-                       width, 
-                       height, 
-                       access_token, 
-                       file_name) {
-  api_call <- 
-    str_glue(
-      "https://api.mapbox.com/styles/v1/{username}/{style_id}/static/{longitude},{latitude},{zoom}/{width}x{height}?access_token={access_token}"
-    )
+mapbox_png <- function(
+  username, style_id, longitude, latitude, zoom, width, height, access_token,
+  path
+) {
+  str_glue(
+    "https://api.mapbox.com/styles/v1/{username}/{style_id}/static/{longitude},{latitude},{zoom}/{width}x{height}?access_token={access_token}"
+  ) %>% 
+    download.file(url = ., destfile = path)
   
-  download.file(url = api_call, destfile = file_name)
-  knitr::include_graphics(circles_map_file)
+  knitr::include_graphics(path = path)
 }
 ```
 

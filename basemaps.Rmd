@@ -676,7 +676,8 @@ Now, you just have to add in all this information to the base call. `str_glue()`
 ```{r}
 api_call <- 
   str_glue(
-    "https://api.mapbox.com/styles/v1/{username}/{style_id}/static/{longitude},{latitude},{zoom}/{width}x{height}?access_token={access_token}"
+    "https://api.mapbox.com/styles/v1/{username}/{style_id}/static/",
+    "{longitude},{latitude},{zoom}/{width}x{height}?access_token={access_token}"
   )
 
 api_call
@@ -692,6 +693,8 @@ Now, we need to download the image. Use `download.file()` to download your image
 file_circles_map <- "images/cholera_circles_map.png"
 download.file(url = api_call, destfile = file_circles_map)
 ```
+
+The result should be a downloaded PNG, which you can view from RStudio or a browser. If this didn't work, you may need to set the a different download method through the `method` argument of `download.file()`.
 
 ### Display your image
 
@@ -711,7 +714,8 @@ mapbox_png <- function(
   path
 ) {
   str_glue(
-    "https://api.mapbox.com/styles/v1/{username}/{style_id}/static/{longitude},{latitude},{zoom}/{width}x{height}?access_token={access_token}"
+    "https://api.mapbox.com/styles/v1/{username}/{style_id}/static/",
+    "{longitude},{latitude},{zoom}/{width}x{height}?access_token={access_token}"
   ) %>% 
     download.file(url = ., destfile = path)
   

@@ -37,19 +37,19 @@ Luckily, there are easier ways of adding _basemaps_ to your maps. A basemap is j
 
 Here's an example basemap from Mapbox, who basemaps and tools we'll use in this chapter.
 
-```{r, echo=FALSE}
+```{r echo=FALSE, out.width="45%"}
 knitr::include_graphics("images/africa.png")
 ```
 
 Mapbox's basemaps are interactive, so we can zoom in and get even more detail. For example, here's what the basemap looks like if we zoom in on Senegal.
 
-```{r, echo=FALSE}
+```{r echo=FALSE, out.width="45%"}
 knitr::include_graphics("images/senegal.png")
 ```
 
-And here's what it look like if we zoom in even further, on a particular spot in Dakar.
+And here's what it look like if we zoom on Dakar.
 
-```{r, echo=FALSE}
+```{r echo=FALSE, out.width="45%"}
 knitr::include_graphics("images/dakar.png")
 ```
 
@@ -141,7 +141,7 @@ Earlier, we introduced you to the idea of tiles. We want to create a custom tile
 * Click on __Tilesets__ in the upper-right corner.
 * Click the blue button labeled __New tileset__.
 * Upload `cholera_deaths.geojson` and `cholera_pumps.geojson`. You'll have to upload one at a time. 
-* The two tilesets should now appear in the list. Each tileset will have a random string identifier after its name.  
+* The two tilesets should now appear in the list. Each tileset will have a random string identifier after its name. If your tilesets did not appear, try refreshing your browser.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/tilesets.png")
@@ -422,11 +422,34 @@ knitr::include_graphics("images/screenshots/heatmap-type.png")
 ```
 
 * Change to the __Style__ tab.
-* Adjust the heatmap radius in the __Radius__ tab. Experiment with different values.
+* Right now, the `deaths` variable is not mapped to the intensity of the heatmap. If you zoom in on your heatmap, you'll notice that each heatmap dot has the same intensity, regardless of the number of deaths at  that location. To map `deaths` to intensity, we'll use the `Weight` parameter. We'll adjust the heatmap weights similarly to how we adjusted the radii of the circles for the previous map. 
+* Click on _Weight_, _Style across data range_, then _deaths_ and _Done_. This maps `deaths` to the weight, but Studio default to keeping the relationship uniform, so the weight doesn't actually change across different values of `deaths`. 
+
+```{r echo=FALSE}
+# sara
+knitr::include_graphics("images/screenshots/heatmap-weight.png")
+```
+
+* Change the way the weights are scaled by adjusting the minimum and/or maximum weight.
+
+```{r echo=FALSE}
+# sara
+knitr::include_graphics("images/screenshots/heatmap-change-weights.png")
+```
+
+* Your heatmap should now look something like this:
+
+```{r echo=FALSE}
+# sara
+knitr::include_graphics("images/screenshots/heatmap-weights-done.png")
+```
+
+* Now, adjust the heatmap radius in the __Radius__ tab. _Radius_ controls the radii of the individual heatmap circles. Experiment with different values.
 * Your map should now look like this:
 
-```{r, echo=FALSE}
-knitr::include_graphics("images/screenshots/heatmap-wrong-order.png")
+```{r echo=FALSE}
+# sara
+knitr::include_graphics("images/screenshots/heatmap-radius.png")
 ```
 
 ### Change the layer order
@@ -436,12 +459,14 @@ The heatmap is on top of the pump layers, obscuring some of the pumps.
 * Change the order of the layers by dragging and dropping the layer names in the list on the left. You want the _cholera_deaths-* _ to be below both of the pumps layers.
 
 ```{r, echo=FALSE}
+# update
 knitr::include_graphics("images/screenshots/heatmap-layers-list.png")
 ```
 
 * Your map should end up looking like this:
 
 ```{r, echo=FALSE}
+#
 knitr::include_graphics("images/screenshots/heatmap-final.png")
 ```
 
@@ -453,77 +478,19 @@ Your heatmap map is complete!
 * Change your map to _Public_.
 * Copy the URL and save it somewhere. You'll need the URL for the next section.
 
-## leaflet.mapboxgl
-
-The package [leaflet.mapboxgl](https://github.com/rstudio/leaflet.mapboxgl) extends the leaflet package to allow you to add Mapbox vector tiles to leaflet maps.
-
-leaflet.mapboxgl has many advantages. First, we'll use `leaflet.mapboxgl::addMapboxGL()` to display our Mapbox maps in R.
-
-* You'll need a Mapbox access token and style URL. You can retrieve your public access token by going to your [Mapbox account page](https://account.mapbox.com/).
-
-* Your style URL is different than the map URL you found earlier. To find your style URL, first go to the [styles page](https://studio.mapbox.com/). Then, click on __Menu__ next to your style and copy the style URL. 
-
-```{r, echo=FALSE}
-knitr::include_graphics("images/screenshots/styles-page-style-url.png")
-```
-
-* Store your style URL and access token in variables.
-
-```{r}
-style_url <- "mapbox://styles/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs"
-access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg"
-```
-
-Now, we can display our map. `addMapboxGL()` adds Mapbox vector tiles to a leaflet map. You can adjust the height and width of a leaflet plot with the `height` and `width` arguments.
-
-```{r}
-leaflet(width = 950, height = 800)  %>% 
-  addMapboxGL(
-    accessToken = access_token,
-    style = style_url
-  )
-```
-
-Another advantage of leaflet.mapboxgl is that you can add any leaflet function to your map. We'll use this functionality to add tooltips, which you can't do in Mapbox Studio. 
-
-The function `addCircleMarkers()` adds circles to a leaflet plot. You can use the `label` argument to set the text of a tooltip. 
-
-Note that you have to use the `deaths` tibble to reference the data.
-
-```{r}
-deaths <- read_sf("data/cholera/cholera_deaths.geojson")
-
-leaflet(width = 950, height = 800) %>% 
-  addMapboxGL(
-    accessToken = access_token,
-    style = style_url
-  ) %>% 
-  addCircleMarkers(
-    radius = ~ 5 * sqrt(deaths),
-    opacity = 0,
-    fillOpacity = 0,
-    label =
-      case_when(
-        deaths$deaths == 1 ~ "1 death",
-        deaths$deaths > 1  ~ str_c(deaths$deaths, " deaths"),
-        TRUE ~ NA_character_
-      ),
-    data = deaths
-  )
-```
-
-
-We already have circles encoding the number of deaths, so we've set the `opacity` and `fillOpacity` of the circle markers to 0. This makes them invisible so you can still see the layers we added in Mapbox Studio.  
-
 ## Static maps
 
-Right now, your maps are interactive and cannot be viewed in documents that only support static images. In this section, you'll learn how to create static versions of your two maps using the Mapbox Static API.
+Right now, you can share your interactive Mapbox maps via the URL. Sometimes, you'll want a static version of your map to embed in documents that only support static images. In this section, you'll learn how to create static versions of your two maps using the Mapbox Static API.
 
-You can use the API to create PNG files or JPEG raster tiles. We'll create PNG files.
+### Mapbox Static API
 
-The trick of using the static API is getting the API call right. Here's what the basic API call looks like:
+The Static API is an interface to Mapbox's servers. You can use this interface to request data from its servers to download to your computer. In order to download your specific map, you need to create an API call. This call tells the API exactly what data you want to download. You'll need to tell the API which map to download, and which location and zoom level to use in order to create a static version of an interactive map. 
+
+You create the API call by specifying parameters in a URL. Here's what the basic API call looks like:
 
 `https://api.mapbox.com/styles/v1/{username}/{style_id}/static/{longitude},{latitude},{zoom}/{width}x{height}?access_token={access_token}`
+
+This call will create a PNG version of your map.
 
 We'll walk you through how to get each piece of information. We'll store each piece of information in a variable so that we can just use `str_glue()` at the end to create the call. 
 
@@ -540,7 +507,7 @@ access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5Mndw
 
 Decide whether you want to first create a static version of your circles map or your heatmap. Then, take a look at that map's URL. 
 
-If you don't already have the map's URL, you can always retrieve it from the [Styles page](https://studio.mapbox.com), which lists all your custom styles. 
+If you don't already have the map's URL, you can retrieve it from the [Styles page](https://studio.mapbox.com). To do so: 
 
 * Click on __Share & use__ next to the name of your map. Then, copy the URL.
 
@@ -557,8 +524,6 @@ Store your map's style ID in a variable.
 ```{r}
 style_id <- "cjsqj3qvi3zrf1fld8qvywggs"
 ```
-
-You can also find the style ID from the style URL you found in the leaflet.mapboxgl section.
 
 ### Longitude and latitude
 
@@ -694,7 +659,7 @@ file_circles_map <- "images/cholera_circles_map.png"
 download.file(url = api_call, destfile = file_circles_map)
 ```
 
-The result should be a downloaded PNG, which you can view from RStudio or a browser. If this didn't work, you may need to set the a different download method through the `method` argument of `download.file()`.
+The result should be a downloaded PNG, which you can view from RStudio or a browser. If you were able to see your PNG by pasting `api_call` into a browser, but your PNG did not download, you may need to set a different download method using the `method` argument of `download.file()`. You can see all available methods in the documentation for `download.file()`.
 
 ### Display your image
 
@@ -723,4 +688,66 @@ mapbox_png <- function(
 }
 ```
 
+## leaflet.mapboxgl
+
+The package [leaflet.mapboxgl](https://github.com/rstudio/leaflet.mapboxgl) extends the leaflet package to allow you to add Mapbox vector tiles to leaflet maps.
+
+leaflet.mapboxgl has many advantages. First, we'll use `leaflet.mapboxgl::addMapboxGL()` to display our Mapbox maps in R.
+
+Note that leaflet.mapboxgl requires RStudio version 1.2 or later to display your plots. 
+
+* You'll need a Mapbox access token and style URL. You can retrieve your public access token by going to your [Mapbox account page](https://account.mapbox.com/).
+
+* Your style URL is different than the share URL you found earlier. To find your style URL, first go to the [styles page](https://studio.mapbox.com/). Then, click on __Menu__ next to your style and copy the style URL. 
+
+```{r, echo=FALSE}
+knitr::include_graphics("images/screenshots/styles-page-style-url.png")
+```
+
+* Store your style URL and access token in variables.
+
+```{r}
+style_url <- "mapbox://styles/stanford-datalab/cjsqj3qvi3zrf1fld8qvywggs"
+access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5MndwMG9jYnhpc3ZiIn0.pSqbBonZJw667NNhHNX1Kg"
+```
+
+Now, we can display our map. `addMapboxGL()` adds Mapbox vector tiles to a leaflet map. You can adjust the height and width of a leaflet plot with the `height` and `width` arguments.
+
+```{r}
+leaflet(width = 950, height = 800)  %>% 
+  addMapboxGL(
+    accessToken = access_token,
+    style = style_url
+  )
+```
+
+Another advantage of leaflet.mapboxgl is that you can add any leaflet function to your map. We'll use this functionality to add tooltips, which you can't do in Mapbox Studio. 
+
+The function `addCircleMarkers()` adds circles to a leaflet plot. You can use the `label` argument to set the text of a tooltip. 
+
+Note that you have to use the `deaths` tibble to reference the data.
+
+```{r}
+deaths <- read_sf("data/cholera/cholera_deaths.geojson")
+
+leaflet(width = 950, height = 800) %>% 
+  addMapboxGL(
+    accessToken = access_token,
+    style = style_url
+  ) %>% 
+  addCircleMarkers(
+    radius = ~ 5 * sqrt(deaths),
+    opacity = 0,
+    fillOpacity = 0,
+    label =
+      case_when(
+        deaths$deaths == 1 ~ "1 death",
+        deaths$deaths > 1  ~ str_c(deaths$deaths, " deaths"),
+        TRUE ~ NA_character_
+      ),
+    data = deaths
+  )
+```
+
+We already have circles encoding the number of deaths, so we've set the `opacity` and `fillOpacity` of the circle markers to 0. This makes them invisible so you can still see the layers we added in Mapbox Studio. 
 

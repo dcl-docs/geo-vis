@@ -338,7 +338,13 @@ Your map is complete!
 ### Publish your map
 
 * Now, you just need to make your map visible to others by publishing. 
-* When you publish your map, you'll get a share URL that others can use to view your map. This public version of your map will have a starting location and zoom level. By default, this location and zoom level will the location and zoom level of your editing map when you click __Publish__. Before publishing, make sure you're happy with the current location and zoom level.
+* When you publish your map, you'll get a URL that points to your published map. Your published map will have a starting location and zoom level. By default, this location and zoom level will the location and zoom level of your editing map when you click __Publish__. Before publishing, make sure you're happy with the current location and zoom level.
+* You can see the exact longitude, latitude, and zoom level by clicking on _Map position_.
+
+```{r echo = FALSE}
+knitr::include_graphics("images/screenshots/static-map-position.png")
+```
+
 * Publish your map by clicking the blue __Publish__ button in the upper-right corner. Then, choose __Publish__.
 
 ```{r, echo=FALSE}
@@ -346,7 +352,12 @@ knitr::include_graphics("images/screenshots/circles-publish.png")
 ```
 
 * Change your map's visibility setting to _Public_. Your map needs to be public in order to use the static API.
-* Copy the URL and store it somewhere. You'll also need this URL for the static API later on.
+* The _Share URL_ points to the shareable version of your map. Copy this URL and paste it into a new browser tab. Your map should open at the default location and zoom level that you set earlier. The Share URLs take the following form:
+
+`https://api.mapbox.com/styles/v1/{username}/{style_id}.html?fresh=true&title=true&access_token={access_token}#{zoom}/{latitude}/{longitude}`
+
+If your map does not default to the location that you set earlier, you may have to manually change your Share URL. To do so, replace your Share URLs zoom, latitude, and longitude with your desired values. Remember that you can find these values under _Map position_ in Studio.
+* Once you have the correct Share URL, copy it and store it somewhere. You'll also need this URL for the static API later on.
 
 ## Heatmap
 
@@ -474,9 +485,11 @@ Your heatmap map is complete!
 
 ### Publish your map
 
+* Just like you did when finalizing your circle map, adjust the longitude, latitude, and zoom of your map so that your published map defaults to the correct location and zoom level.
 * Click the blue __Publish__ button on the right to publish your map. Then, choose __Publish__.
 * Change your map to _Public_.
-* Copy the URL and save it somewhere. You'll need the URL for the next section.
+* Copy the Share URL. Again, paste this URL into a new browser tab to check that your map defaults to the correct location. If your map does not default to the location you set earlier, you may have to manually change the Share URL by following the steps we explained in 1.3.9.
+* Copy the Share URL and store it somewhere. You'll need it for the next section.
 
 ## Static maps
 
@@ -505,11 +518,13 @@ access_token <- "pk.eyJ1Ijoic3RhbmZvcmQtZGF0YWxhYiIsImEiOiJjajh1aW84OXYxMWh5Mndw
 
 ### Style ID
 
-Decide whether you want to first create a static version of your circles map or your heatmap. Then, take a look at that map's URL. 
+Decide whether you want to first create a static version of your circles map or your heatmap. 
 
-If you don't already have the map's URL, you can retrieve it from the [Styles page](https://studio.mapbox.com). To do so: 
+Now, we need to find this map's style ID. You can find the style ID in the Share URL you found earlier. 
 
-* Click on __Share & use__ next to the name of your map. Then, copy the URL.
+If you don't already have your map's Share URL, you can retrieve it from the [Styles page](https://studio.mapbox.com). To do so: 
+
+* Click on __Share & use__ next to the name of your map. Then, copy the Share URL.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/styles-page-share-url.png")

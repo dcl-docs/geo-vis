@@ -1,6 +1,6 @@
 # Geospatial Visualization
 
-This repository contains the source for the book [Geospatial Visualization]().
+This repository contains the source for the book [Geospatial Visualization](https://dcl-geo-vis.stanford.edu/).
 
 We welcome suggestions for improvements.
 

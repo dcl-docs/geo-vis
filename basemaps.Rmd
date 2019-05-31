@@ -339,9 +339,9 @@ Your map is complete!
 
 ### Publish your map
 
-* Now, you just need to make your map visible to others by publishing. 
-* When you publish your map, you'll get a URL that points to your published map. Your published map will have a starting location and zoom level. By default, Studio will set this location and zoom level to the location and zoom level of your map at the time of publishing. Before clicking __Publish__, make sure you're happy with the current location and zoom level.
-* You can also see the exact longitude, latitude, and zoom level by clicking on __Map position__.
+Now, you just need to make your map visible to others by publishing. 
+
+* When you publish your map, you'll get a URL that points to your published map. Your published map will have a starting location and zoom level. If you used the Light style, your map's starting location will likely still be Boston. To set the map's starting location, first move your map so that it's centered on your data. Then, go to __Default map position__ and toggle __Lock__ so that the map's default location is no longer locked on Boston. You should see the longitude and latitude in the text boxes update. Click __Lock__ again to lock your default location.
 
 ```{r echo = FALSE}
 knitr::include_graphics("images/screenshots/static-map-position.png")
@@ -484,7 +484,7 @@ Your heatmap map is complete!
 
 ### Publish your map
 
-* To finalize your map, adjust the longitude, latitude, and zoom of your map so that your published map defaults to the correct location and zoom level.
+* To finalize your map, again center your map on your data, then un-lock your map's default location to set the default to the current location. Re-lock the defaul location. 
 * Click the blue __Publish__ button in the top-right to publish your map.
 * Click on __Share...__ and then copy the Share URL. Again, paste this URL into a new browser tab to check that your map defaults to the correct location. If your map does not default to the location you set earlier, you may have to manually change the Share URL by following the steps we explained in 1.3.9.
 * Copy the Share URL and store it somewhere. You'll need it for the next section.

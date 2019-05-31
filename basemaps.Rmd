@@ -341,7 +341,7 @@ Your map is complete!
 
 Now, you just need to make your map visible to others by publishing. 
 
-* When you publish your map, you'll get a URL that points to your published map. Your published map will have a starting location and zoom level. If you used the Light style, your map's starting location will likely still be Boston. To set the map's starting location, first move your map so that it's centered on your data. Then, go to __Default map position__ and toggle __Lock__ so that the map's default location is no longer locked on Boston. You should see the longitude and latitude in the text boxes update. Click __Lock__ again to lock your default location.
+* When you publish your map, you'll get a URL that points to your published map. Your published map will have a starting location and zoom level. If you used the Light style, your map's starting location will likely still be Boston. To set the map's starting location and zoom level, first move / zoom your map so that it's centered on your data. Then, go to __Default map position__ and toggle __Lock__ so that the map's default location is no longer locked on Boston. You should see the longitude and latitude in the text boxes update. Click __Lock__ again to lock your default location.
 
 ```{r echo = FALSE}
 knitr::include_graphics("images/screenshots/static-map-position.png")

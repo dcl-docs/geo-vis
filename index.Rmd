@@ -4,7 +4,7 @@ title: "Geospatial Visualization"
 author: "Sara Altman, Bill Behrman"
 date: "`r Sys.Date()`"
 description: "This book is a practical introduction to creating effective geospatial visualizations."
-url: 'https\://datalab.stanford.edu/dcl-docs/geo-vis'
+url: 'https\://dcl-geo-vis.stanford.edu'
 github-repo: dcl-docs/geo-vis
 site: bookdown::bookdown_site
 documentclass: book

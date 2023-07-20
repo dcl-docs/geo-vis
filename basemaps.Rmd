@@ -15,10 +15,10 @@ library(sf)
 africa <- read_sf("data/countries/africa.geojson")
 ```
 
-leaflet.mapboxgl is new, and not yet on CRAN. You can install the package from GitHub by running the following line of code in the console.
+leaflet.mapboxgl is on CRAN. You can install the package from GitHub by running the following line of code in the console.
 
 ```{r, eval=FALSE}
-devtools::install_github("rstudio/leaflet.mapboxgl")
+remotes::install_github("rstudio/leaflet.mapboxgl")
 ```
 
 ### Basemaps
@@ -110,7 +110,7 @@ In 1854, many mistakenly believed that cholera was spread through the air. Howev
 
 Snow reported his findings to the authorities responsible for the community water supply, who then removed the handle from the Broad Street pump. The epidemic soon ended.
 
-Snow visualized his data by creating a map showing the location of local water pumps and deaths from the outbreak. This map helped overturn the prevailing belief that cholera was an airborne disease. As a result, London improved its water infrastructure and developed procedures to eliminate future such cholera outbreaks.
+Snow visualized his data by creating a map showing the location of local water pumps and deaths from the outbreak. This map helped overturn the prevailing belief that cholera was an airborne disease. As a result, London improved its water infrastructure and developed procedures to eliminate future cholera outbreaks.
 
 ###  Download data
 
@@ -143,7 +143,7 @@ Earlier, we introduced you to the idea of tiles. We want to create a custom tile
 * Click on __Tilesets__ in the upper-right corner.
 * Click the blue button labeled __New tileset__.
 * Upload `cholera_deaths.geojson` and `cholera_pumps.geojson`. You'll have to upload one at a time. 
-* The two tilesets should now appear in the list. Each tileset will have a random string identifier after its name. If your tilesets did not appear, try refreshing your browser.
+* The two tilesets should now appear in the list. Each tileset will have a random string identifier after its name. Below we will use a "*" to represent this identifier. If your tilesets did not appear, try refreshing your browser.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/screenshots/tilesets.png")
@@ -291,7 +291,7 @@ knitr::include_graphics("images/screenshots/circles-deaths-layer-styled.png")
 Now, we'll add a layer to represent the pump locations.
 
 * Again, click on __Add layer__ to create a new layer.
-* Click on your _cholera_pumps-* _ tileset from the unused sources list. Then, click on the _cholera_pumps-*_ layer that appears underneath.
+* Click on your _cholera_pumps-* _ tileset from the unused sources list. Then, click on the _cholera_pumps-* _ layer that appears underneath.
 * Go to the __Style__ tab of the layer editor.
 
 ```{r, echo=FALSE}
@@ -358,6 +358,7 @@ knitr::include_graphics("images/screenshots/circles-publish.png")
 `https://api.mapbox.com/styles/v1/{username}/{style_id}.html?fresh=true&title=true&access_token={access_token}#{zoom}/{latitude}/{longitude}`
 
 If your map does not default to the location that you set earlier, you may have to manually change your Share URL. To do so, replace your Share URLs zoom, latitude, and longitude with your desired values. Remember that you can find these values under _Map position_ in Studio.
+
 * Once you have the correct Share URL, copy and store it somewhere. You'll need this URL for the static API later on.
 
 ## Heatmap
@@ -552,12 +553,14 @@ ggplot() +
 
 We'll exclude this pump and focus on where most of the data lies.
 
-First, we need to find the latitude of each pump. Then, we can use `top_n()` to filter out the southernmost pump.
+First, we need to find the latitude of each pump. Then, we can use `slice_max()` to filter out the southernmost pump.
 
 ```{r}
 pumps %>% 
-  mutate(latitude = map_dbl(geometry, ~ st_coordinates(.)[[2]])) %>% 
-  top_n(nrow(.) - 1, latitude) 
+  rowwise() %>% 
+  mutate(latitude = st_coordinates(geometry)[[2]]) %>% 
+  ungroup() %>% 
+  slice_max(latitude, n = nrow(.) - 1) -> z3
 ```
 
 Now, we'll find the bounding box of all our data. Once we have the bounding box, we can find the center of the box. 
@@ -565,10 +568,12 @@ Now, we'll find the bounding box of all our data. Once we have the bounding box,
 ```{r, message=FALSE}
 bounding_box <-
   pumps %>% 
-  mutate(latitude = map_dbl(geometry, ~ st_coordinates(.)[[2]])) %>% 
-  top_n(nrow(.) - 1, latitude) %>% 
+  rowwise() %>% 
+  mutate(latitude = st_coordinates(geometry)[[2]]) %>% 
+  ungroup() %>% 
+  slice_max(latitude, n = nrow(.) - 1) %>% 
   st_geometry() %>% 
-  st_union(deaths %>% st_geometry()) %>% 
+  c(deaths %>% st_geometry()) %>% 
   st_bbox() %>% 
   st_as_sfc() 
 ```
@@ -686,7 +691,14 @@ Here's a function that includes all the code to make this process a bit easier. 
 
 ```{r}
 mapbox_png <- function(
-  username, style_id, longitude, latitude, zoom, width, height, access_token,
+  username,
+  style_id,
+  longitude,
+  latitude,
+  zoom,
+  width,
+  height,
+  access_token,
   path
 ) {
   str_glue(
@@ -735,8 +747,6 @@ The function `addCircleMarkers()` adds circles to a leaflet plot. You can use th
 Note that you have to set `data = deaths` inside `addCircleMarkers()` in order to reference the data.
 
 ```{r}
-deaths <- read_sf("data/cholera/cholera_deaths.geojson")
-
 leaflet(width = 950, height = 800) %>% 
   addMapboxGL(
     accessToken = access_token,

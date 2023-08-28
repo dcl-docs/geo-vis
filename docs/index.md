@@ -1,0 +1,23 @@
+---
+knitr: bookdown::render_book
+title: "Geospatial Visualization"
+author: "Sara Altman, Bill Behrman"
+date: "2021-08-24"
+description: "This book is a practical introduction to creating effective geospatial visualizations."
+url: 'https\://dcl-geo-vis.stanford.edu'
+github-repo: dcl-docs/geo-vis
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: references.bib
+link-citations: true
+---
+
+# Welcome {-}
+
+This book is a practical introduction to creating effective geospatial visualizations.
+
+## An evolving book {-}
+
+This book is not intended to be static. Starting in January 2019, we use this book to teach data visualization in the Stanford [Data Challenge Lab](https://datalab.stanford.edu/challenge-lab) (DCL) course. The DCL functions as a testing ground for educational materials, as our students give us routine feedback on what they read and do in the course. We use this feedback to constantly improve our materials, including this book. The [source for the book](https://github.com/dcl-docs/geo-vis) is also available on GitHub where we welcome suggestions for improvements.
+
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). 
